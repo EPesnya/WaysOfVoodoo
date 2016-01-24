@@ -12,8 +12,8 @@ public class CameraFollow : MonoBehaviour {
         Player = GameObject.FindGameObjectWithTag("Player");
 	}
 	
-	void Update () 
+	void FixedUpdate () 
     {
-        GetComponent<Rigidbody2D>().velocity = (new Vector2(Player.transform.position.x, Player.transform.position.y + verticalShift) - (Vector2)transform.position) * speed;
+        GetComponent<Rigidbody2D>().velocity = (new Vector2(Player.transform.position.x, Player.transform.position.y + verticalShift) - (Vector2)transform.position) ;
 	}
 }
