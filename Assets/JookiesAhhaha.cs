@@ -12,12 +12,10 @@ public class JookiesAhhaha : MonoBehaviour {
         if (Input.GetKey("w"))
         {
             other.gameObject.transform.position = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y + 0.05f);
-            Debug.Log("Zhenya durak");
         }
         if (Input.GetKey("s"))
         {
             other.gameObject.transform.position = new Vector2(other.gameObject.transform.position.x, other.gameObject.transform.position.y - 0.05f);
-            Debug.Log("Zhenya durak");
         }
     }
     void OnTriggerExit2D(Collider2D other)
