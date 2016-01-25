@@ -14,6 +14,6 @@ public class CameraFollow : MonoBehaviour {
 	
 	void FixedUpdate () 
     {
-        GetComponent<Rigidbody2D>().velocity = (new Vector2(Player.transform.position.x, Player.transform.position.y + verticalShift) - (Vector2)transform.position) ;
+        GetComponent<Rigidbody2D>().velocity = (new Vector2(Player.transform.position.x, Player.transform.position.y + verticalShift) - (Vector2)transform.position) * speed;
 	}
 }
