@@ -15,11 +15,11 @@ public class HeroControls : MonoBehaviour {
         Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
 	    if(Input.GetKey("d"))
         {
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(2, curVelocity.y);
+            this.GetComponent<Rigidbody2D>().velocity = new Vector2(1, curVelocity.y);
         }
         else if(Input.GetKey("a"))
         {
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(-2, curVelocity.y);
+            this.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, curVelocity.y);
         }
         if (Input.GetKey("w"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
         {
