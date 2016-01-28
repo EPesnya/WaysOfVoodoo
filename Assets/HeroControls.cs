@@ -8,6 +8,10 @@ public class HeroControls : MonoBehaviour {
     float speed = 0;
     bool isWalking = false;
     bool isLookToRight = true;
+    public float maxSpeed = 3;
+    float starPrepJump;
+    float jumpDelay = 0.3f;
+    bool shouldJump;
 
     void Strat()
     {
@@ -26,18 +30,18 @@ public class HeroControls : MonoBehaviour {
         Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
         if (Input.GetKey("d"))
         {
-            speed += 0.1f;
-            if(speed > 0.9f)
+            speed += 0.3f;
+            if (speed > maxSpeed)
             {
-                speed = 0.9f;
+                speed = maxSpeed;
             }
         }
         else if (Input.GetKey("a"))
         {
-            speed -= 0.1f;
-            if (speed < -0.9f)
+            speed -= 0.3f;
+            if (speed < -maxSpeed)
             {
-                speed = -0.9f;
+                speed = -maxSpeed;
             }
         }
 
@@ -54,8 +58,14 @@ public class HeroControls : MonoBehaviour {
 
         if (Input.GetKeyDown("w"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
         {
-            this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 300), ForceMode2D.Force);
+            starPrepJump = Time.time;
+            shouldJump = true;
             anim.SetTrigger("Jump");
+        }
+        if (Time.time - starPrepJump > jumpDelay && shouldJump)
+        {
+            this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 300), ForceMode2D.Force);
+            shouldJump = false;
         }
 
         this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
