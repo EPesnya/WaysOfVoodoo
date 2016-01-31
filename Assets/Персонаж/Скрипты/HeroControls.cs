@@ -64,7 +64,7 @@ public class HeroControls : MonoBehaviour {
         }
         if (Time.time - starPrepJump > jumpDelay && shouldJump)
         {
-            this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 300), ForceMode2D.Force);
+            this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500), ForceMode2D.Force);
             shouldJump = false;
         }
 
