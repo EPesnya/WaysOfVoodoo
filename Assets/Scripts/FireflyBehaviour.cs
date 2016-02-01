@@ -11,7 +11,11 @@ public class FireflyBehaviour : MonoBehaviour {
 
 	void Start () 
     {
-        depth = Random.RandomRange(0.1f, 3f);   
+        depth = Random.RandomRange(0.1f, 2.9f);   
+        if(depth > 1)
+        {
+            GetComponent<SpriteRenderer>().sortingOrder = 7;
+        }
 	}
 	
 	void Update () 

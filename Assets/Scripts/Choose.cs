@@ -4,8 +4,8 @@ using System.Collections;
 public class Choose : MonoBehaviour {
 
     GameObject Player;
-    public GameObject Show;
-	// Use this for initialization
+    public GameObject Eye;
+
 	void Start () {
         Player = GameObject.FindGameObjectWithTag("Player");
 	}
@@ -16,10 +16,16 @@ public class Choose : MonoBehaviour {
         {
             if (Mathf.Abs(this.transform.position.y - Player.transform.position.y) < 1.2f)
             {
-                Show.SetActive(true);
+                Eye.SetActive(true);
             }
-            else Show.SetActive(false);
+            else
+            {
+                Eye.SetActive(false);
+            }
         }
-        else Show.SetActive(false);
+        else
+        {
+            Eye.SetActive(false);
+        }
 	}
 }
