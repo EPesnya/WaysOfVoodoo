@@ -6,21 +6,19 @@ using UnityEngine.UI;
 public class TaskList : MonoBehaviour {
 
     public List<Task> list;
+    public List<Button> Buttons;
     int count;
+    public int selected = 0;
+    public GameObject DescriptionObject;
 
     public void AddTast(Task a)
     {
-        list.Add(a);
         return;
     }
 
 	void Start () 
     {
-        Task asd = new Task();
-        list.Add(asd);
-        list.Add(asd);
-        list.Add(asd);
-        list.Add(asd);
+        Task asd = new Task(0);
         list.Add(asd);
         list.Add(asd);
         list.Add(asd);
@@ -28,14 +26,9 @@ public class TaskList : MonoBehaviour {
         string s = "";
         for(int i = 0; i < count; i++)
         {
-            s += list[i].done ? "notReady " : "Ready ";
-            s += list[i].name + " " + list[i].description + " " + list[i].target + "\n";
+            s += list[i].done ? "Ready " : "notReady ";
+            s += list[i].name + " " + list[i].target + "\n";
         }
         this.GetComponent<Text>().text = s;
-	}
-
-	void Update () 
-    {
-	    
 	}
 }

@@ -13,6 +13,10 @@ public class HeroControls : MonoBehaviour {
     float jumpDelay = 0.3f;
     bool shouldJump;
 
+    bool isFlying = false;
+    float flyingStart;
+    float timeOfFlight = 1;
+
     void Strat()
     {
         //anim = this.GetComponent<Animator>();
@@ -61,7 +65,32 @@ public class HeroControls : MonoBehaviour {
             starPrepJump = Time.time;
             shouldJump = true;
             anim.SetTrigger("Jump");
+        } 
+        
+        if (Input.GetKeyDown("q"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
+        {
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250), ForceMode2D.Force);
+            GetComponent<Rigidbody2D>().gravityScale = 1f;
+            anim.SetTrigger("AirJump");
+            flyingStart = Time.time;
+            isFlying = true;
         }
+        if (isFlying)
+        {
+            if (Time.time - flyingStart < timeOfFlight)
+            {
+                if(isLookToRight)
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(300, 0), ForceMode2D.Force);
+                else
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(-300, 0), ForceMode2D.Force);
+            }
+            else
+            {
+                GetComponent<Rigidbody2D>().gravityScale = 3f;
+                isFlying = false;
+            }
+        }
+
         if (Time.time - starPrepJump > jumpDelay && shouldJump)
         {
             this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500), ForceMode2D.Force);

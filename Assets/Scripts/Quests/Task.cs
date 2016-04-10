@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System.IO;
+using System;
+using System.Text;
 
 public class Task : MonoBehaviour {
 
@@ -15,6 +19,15 @@ public class Task : MonoBehaviour {
         name = "QuestName";
         description = "Description";
         target = "Target";
+    }
+
+    public Task(int id)
+    {
+        StreamReader file = new System.IO.StreamReader(Application.dataPath + "/Texts/Quests/" 
+                                                        + id.ToString() + ".txt", Encoding.Default);
+        name = file.ReadLine();
+        description = file.ReadLine();
+        target = file.ReadLine();
     }
 
 }
