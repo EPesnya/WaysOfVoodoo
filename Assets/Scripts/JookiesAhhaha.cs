@@ -5,6 +5,7 @@ public class JookiesAhhaha : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        if(other.tag == "Player")
         other.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
     }
     void OnTriggerStay2D(Collider2D other)
