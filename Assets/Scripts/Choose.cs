@@ -35,7 +35,7 @@ public class Choose : MonoBehaviour {
                 isWasHere = false;
             }
         }
-        if(isTurningOff && Time.time - startOfTurningOff > 1)
+        if(isTurningOff && Time.time - startOfTurningOff > 0)
         {
             Eye.SetActive(false);
             isTurningOff = false;

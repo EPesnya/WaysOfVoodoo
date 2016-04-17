@@ -5,6 +5,7 @@ public class EyeMoreInf : MonoBehaviour
 {
     private GameObject Field;
     public Sprite Text;
+    public Sprite Speach;
     // Use this for initialization
     void Start()
     {
@@ -18,6 +19,10 @@ public class EyeMoreInf : MonoBehaviour
             Field.GetComponent<SpriteRenderer>().sprite = Text;
             Field.SetActive(true);
             ListCloser.gObject = this.gameObject;
+        }
+        if (Speach != null)
+        {
+            this.GetComponent<SpriteRenderer>().sprite = Speach;
         }
 
     }

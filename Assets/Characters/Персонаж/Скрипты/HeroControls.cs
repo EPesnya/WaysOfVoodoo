@@ -17,6 +17,22 @@ public class HeroControls : MonoBehaviour {
     float flyingStart;
     float timeOfFlight = 1;
 
+
+    public static bool grounded;
+
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        grounded = true;
+
+    }
+
+    void OnCollisionExit2D(Collision2D coll)
+    {
+        grounded = false;
+    }
+
+
     void Strat()
     {
         //anim = this.GetComponent<Animator>();
@@ -30,85 +46,84 @@ public class HeroControls : MonoBehaviour {
 
 	void FixedUpdate () 
     {
-        speed *= 0.9f;
-        Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
-        if (Input.GetKey("d"))
-        {
-            speed += 0.3f;
-            if (speed > maxSpeed)
+            speed *= 0.9f;
+            Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
+            if (Input.GetKey("d"))
             {
-                speed = maxSpeed;
+                speed += 0.3f;
+                if (speed > maxSpeed)
+                {
+                    speed = maxSpeed;
+                }
             }
-        }
-        else if (Input.GetKey("a"))
-        {
-            speed -= 0.3f;
-            if (speed < -maxSpeed)
+            else if (Input.GetKey("a"))
             {
-                speed = -maxSpeed;
+                speed -= 0.3f;
+                if (speed < -maxSpeed)
+                {
+                    speed = -maxSpeed;
+                }
             }
-        }
 
-        if (speed < 0 && isLookToRight)
-        {
-            Flip();
-            isLookToRight = false;
-        }
-        if (speed > 0 && !isLookToRight)
-        {
-            Flip();
-            isLookToRight = true;
-        }
-
-        if (Input.GetKeyDown("w"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
-        {
-            starPrepJump = Time.time;
-            shouldJump = true;
-            anim.SetTrigger("Jump");
-        } 
-        
-        if (Input.GetKeyDown("q"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
-        {
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250), ForceMode2D.Force);
-            GetComponent<Rigidbody2D>().gravityScale = 1f;
-            anim.SetTrigger("AirJump");
-            flyingStart = Time.time;
-            isFlying = true;
-        }
-        if (isFlying)
-        {
-            if (Time.time - flyingStart < timeOfFlight)
+            if (speed < 0 && isLookToRight)
             {
-                if(isLookToRight)
-                    GetComponent<Rigidbody2D>().AddForce(new Vector2(300, 0), ForceMode2D.Force);
+                Flip();
+                isLookToRight = false;
+            }
+            if (speed > 0 && !isLookToRight)
+            {
+                Flip();
+                isLookToRight = true;
+            }
+
+            if (Input.GetKeyDown("space") && grounded)
+            {
+                anim.SetTrigger("Jump");
+                shouldJump = true;
+            }
+
+            if (Input.GetKeyDown("q"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
+            {
+                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250), ForceMode2D.Force);
+                GetComponent<Rigidbody2D>().gravityScale = 1f;
+                anim.SetTrigger("AirJump");
+                flyingStart = Time.time;
+                isFlying = true;
+            }
+            if (isFlying)
+            {
+                if (Time.time - flyingStart < timeOfFlight)
+                {
+                    if (isLookToRight)
+                        GetComponent<Rigidbody2D>().AddForce(new Vector2(300, 0), ForceMode2D.Force);
+                    else
+                        GetComponent<Rigidbody2D>().AddForce(new Vector2(-300, 0), ForceMode2D.Force);
+                }
                 else
-                    GetComponent<Rigidbody2D>().AddForce(new Vector2(-300, 0), ForceMode2D.Force);
+                {
+                    GetComponent<Rigidbody2D>().gravityScale = 3f;
+                    isFlying = false;
+                }
             }
-            else
+
+            if (Time.time - starPrepJump > jumpDelay && shouldJump)
             {
-                GetComponent<Rigidbody2D>().gravityScale = 3f;
-                isFlying = false;
+                this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500), ForceMode2D.Force);
+                shouldJump = false;
             }
-        }
 
-        if (Time.time - starPrepJump > jumpDelay && shouldJump)
-        {
-            this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500), ForceMode2D.Force);
-            shouldJump = false;
-        }
+            this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
+            anim.SetFloat("MovementSpeed", Mathf.Abs(speed));
 
-        this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
-        anim.SetFloat("MovementSpeed", Mathf.Abs(speed));
-
-        if(Mathf.Abs(speed) < 0.1f && isWalking)
-        {
-            //anim.Play("Rest", -1, 0);
-            isWalking = false;
-        }
-        if (Mathf.Abs(speed) > 0.1f && !isWalking)
-        {
-            //anim.Play("Walk", -1, 0);
-            isWalking = true;
-        }
+            if (Mathf.Abs(speed) < 0.1f && isWalking)
+            {
+                //anim.Play("Rest", -1, 0);
+                isWalking = false;
+            }
+            if (Mathf.Abs(speed) > 0.1f && !isWalking)
+            {
+                //anim.Play("Walk", -1, 0);
+                isWalking = true;
+            }
 	}
 }
