@@ -4,6 +4,11 @@ using System.Collections;
 public class JookiesAhhaha : MonoBehaviour {
 
     
+    void OnGUI()
+    {
+        GUI.Label(new Rect(100, 100, 100, 100), HeroControls.grounded.ToString());
+    }
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.tag == "Player")
@@ -14,9 +19,7 @@ public class JookiesAhhaha : MonoBehaviour {
                 other.GetComponent<Animator>().SetBool("OnStairs", true);
             }
             if (other.GetComponent<Animator>().GetBool("OnStair"))
-            {
                 other.GetComponent<Animator>().speed = 0;
-            }
             if (Input.GetKey("w"))
             {
                 //HeroControls.canMove = false;
@@ -41,12 +44,14 @@ public class JookiesAhhaha : MonoBehaviour {
             }
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
             other.GetComponent<Animator>().SetBool("OnStairs", false);
             other.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+            other.GetComponent<Animator>().speed = 1;
         }
     }
 
