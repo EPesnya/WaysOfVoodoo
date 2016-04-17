@@ -18,19 +18,10 @@ public class HeroControls : MonoBehaviour {
     float timeOfFlight = 1;
 
 
-    public static bool grounded;
+    public static bool grounded = true;
 
 
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        grounded = true;
-
-    }
-
-    void OnCollisionExit2D(Collision2D coll)
-    {
-        grounded = false;
-    }
+    
 
 
     void Strat()
@@ -76,7 +67,7 @@ public class HeroControls : MonoBehaviour {
                 isLookToRight = true;
             }
 
-            if (Input.GetKeyDown("space") && grounded)
+            if (Input.GetKeyDown("space") && HeroControls.grounded)
             {
                 anim.SetTrigger("Jump");
                 shouldJump = true;
