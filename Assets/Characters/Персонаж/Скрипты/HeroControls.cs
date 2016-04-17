@@ -19,8 +19,11 @@ public class HeroControls : MonoBehaviour {
 
 
     public static bool grounded;
+    public Transform groundDetector;
+    float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
 
-
+    /*
     void OnCollisionEnter2D(Collision2D coll)
     {
         grounded = true;
@@ -38,7 +41,7 @@ public class HeroControls : MonoBehaviour {
         //anim = this.GetComponent<Animator>();
         Ground = GameObject.FindGameObjectWithTag("Respawn");
     }
-
+    */
     void Flip()
     {
         this.transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
@@ -46,6 +49,7 @@ public class HeroControls : MonoBehaviour {
 
 	void FixedUpdate () 
     {
+        grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
             speed *= 0.9f;
             Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
             if (Input.GetKey("d"))
