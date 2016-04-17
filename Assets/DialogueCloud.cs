@@ -16,6 +16,9 @@ public class DialogueCloud : MonoBehaviour {
     string[] replicas;
     bool isPlayerFirst;
     int curReplica = 0;
+    public GameObject TopBorder;
+    public GameObject BottomBorder;
+    public GameObject Parent;
 
     void OnGUI()
     {
@@ -43,20 +46,23 @@ public class DialogueCloud : MonoBehaviour {
         countOfLines = 1;
         string s = curText.text;
         string[] ss = s.Split(' ');
-        int curC = 0;
+        float curC = 0;
         int maxCountInLine = xSize / fontWidth;
         for (int i = 0; i < ss.Length; i++)
         {
             if (curC + ss[i].Length <= maxCountInLine)
             {
-                curC += (ss[i].Length + 1);
+                curC += (ss[i].Length + 0.35f);
             }
             else
             {
                 countOfLines++;
-                curC = ss[i].Length + 1;
+                curC = ss[i].Length + 0.35f;
             }
         }
+        transform.localScale = new Vector2(1, (float)(180 + countOfLines * 15) / 150);
+        TopBorder.transform.position = new Vector2(transform.position.x, transform.position.y + transform.localScale.y * 0.75f);
+        BottomBorder.transform.position = new Vector2(transform.position.x, transform.position.y - transform.localScale.y * 0.75f);
     }
 
 	void Start ()
@@ -73,10 +79,17 @@ public class DialogueCloud : MonoBehaviour {
     {
 	    if(Input.GetMouseButtonDown(0))
         {
-            curReplica++;
-            isPlayerFirst = !isPlayerFirst;
-            SetText(replicas[curReplica], isPlayerFirst);
-            Initialize(textField);
+            if (replicas.Length > curReplica + 1)
+            {
+                curReplica++;
+                isPlayerFirst = !isPlayerFirst;
+                SetText(replicas[curReplica], isPlayerFirst);
+                Initialize(textField);
+            }
+            else
+            {
+                Parent.SetActive(false);
+            }
         }
 	}
 }
