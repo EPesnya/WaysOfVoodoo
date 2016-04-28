@@ -4,24 +4,31 @@ using System.Linq;
 using System.IO;
 using System;
 using System.Text;
+using UnityEngine.UI;
 
 public class Task : MonoBehaviour {
 
-    public bool done = false;
-    public GameObject QuestGiver;
-    public bool hendedIn = false;
-    public string name;
-    public string description;
-    public string target;
-
-    public Task()
+    public int id;
+    string name, description, target;
+    
+    void Start()
     {
-        name = "QuestName";
-        description = "Description";
-        target = "Target";
+        if (id != 0)
+            SetTask(id);
+        else
+        {
+            name = "QuestName";
+            description = "Description";
+            target = "Target";
+        }
     }
 
-    public Task(int id)
+    void OnMouseDown()
+    {
+        GameObject.FindGameObjectWithTag("TaskList").GetComponent<TaskList>().SetQuestTexts(description, target, name);
+    }
+
+    public void SetTask(int id)
     {
         StreamReader file = new System.IO.StreamReader(Application.dataPath + "/Texts/Quests/" 
                                                         + id.ToString() + ".txt", Encoding.Default);
