@@ -25,7 +25,8 @@ public class Task : MonoBehaviour {
 
     void OnMouseDown()
     {
-        GameObject.FindGameObjectWithTag("TaskList").GetComponent<TaskList>().SetQuestTexts(description, target, name);
+        if (!TaskList.isQOpened)
+            GameObject.FindGameObjectWithTag("TaskList").GetComponent<TaskList>().SetQuestTexts(description, target, name);
     }
 
     public void SetTask(int id)
