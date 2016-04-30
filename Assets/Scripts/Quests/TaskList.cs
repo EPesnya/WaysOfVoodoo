@@ -18,6 +18,7 @@ public class TaskList : MonoBehaviour {
     int selectedPage = 0;
     int countOfPages = 0;
     string[] Pages = new string[5];
+    GameObject[] bImages;
 
     public void closeCurQuest()
     {
@@ -30,6 +31,9 @@ public class TaskList : MonoBehaviour {
         buttons[0].SetActive(false);
         buttons[1].SetActive(false);
         buttons[2].SetActive(false);
+        bImages[0].SetActive(false);
+        bImages[1].SetActive(false);
+        bImages[2].SetActive(false);
         for (int i = 0; i < 5; i++)
             Pages[i] = "";
         TaskList.isQOpened = false;
@@ -55,6 +59,8 @@ public class TaskList : MonoBehaviour {
         QName = GameObject.FindGameObjectWithTag("QuestName").GetComponent<Text>();
         QTarget = GameObject.FindGameObjectWithTag("QuestTarget").GetComponent<Text>();
         buttons = GameObject.FindGameObjectsWithTag("QuestButton");
+        bImages = GameObject.FindGameObjectsWithTag("QuestBackground");
+
         cam = Camera.main.gameObject;
         list = GameObject.FindGameObjectsWithTag("Task");
         int tmp = 0;
@@ -72,6 +78,9 @@ public class TaskList : MonoBehaviour {
         buttons[0].SetActive(false);
         buttons[1].SetActive(false);
         buttons[2].SetActive(false);
+        bImages[0].SetActive(false);
+        bImages[1].SetActive(false);
+        bImages[2].SetActive(false);
 	}
 
     public void SetQuestTexts(string d, string t, string n)
@@ -116,6 +125,9 @@ public class TaskList : MonoBehaviour {
         buttons[0].SetActive(true);
         buttons[1].SetActive(true);
         buttons[2].SetActive(true);
+        bImages[0].SetActive(true);
+        bImages[1].SetActive(true);
+        bImages[2].SetActive(true);
         TaskList.isQOpened = true;
         TriggerChildren();
     }
