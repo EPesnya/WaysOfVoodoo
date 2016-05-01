@@ -11,7 +11,7 @@ public class HeroControls : MonoBehaviour {
     public float maxSpeed = 3;
     float starPrepJump;
     float jumpDelay = 0.3f;
-    bool shouldJump;
+    bool shouldJump, isJumping = false;
 
     bool isFlying = false;
     float flyingStart;
@@ -22,6 +22,7 @@ public class HeroControls : MonoBehaviour {
     public Transform groundDetector;
     float groundRadius = 0.2f;
     public LayerMask whatIsGround;
+    public float jumpForce = 10;
 
     /*
     void OnCollisionEnter2D(Collision2D coll)
@@ -79,12 +80,27 @@ public class HeroControls : MonoBehaviour {
                 Flip();
                 isLookToRight = true;
             }
+            if (isJumping && grounded)
+                isJumping = false;
 
             if (Input.GetKeyDown("space") && grounded)
             {
                 anim.SetTrigger("Jump");
+                isJumping = true;
                 shouldJump = true;
             }
+            if(isJumping && !grounded)
+            {
+                if (Input.GetKey("a"))
+                {
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(-jumpForce, 0));
+                }
+                if (Input.GetKey("d"))
+                {
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpForce, 0));
+                }
+            }
+            
 
             if (Input.GetKeyDown("q"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
             {

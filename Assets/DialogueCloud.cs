@@ -20,11 +20,7 @@ public class DialogueCloud : MonoBehaviour {
     public GameObject BottomBorder;
     public GameObject Parent;
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 1000, 100), countOfLines.ToString());
-    }
-
+ 
     void SetText(string cur, bool isCharFirst)
     {
         textField.text = cur;
@@ -36,33 +32,45 @@ public class DialogueCloud : MonoBehaviour {
         {
             transform.position = anc2.position;
         }
-        textField.rectTransform.position =
-            (Vector2)Camera.main.WorldToScreenPoint
-            (new Vector3(transform.position.x, transform.position.y, 0));
     }
 
     void Initialize(Text curText)
     {
-        countOfLines = 1;
+		
+        float ls = 1f;
         string s = curText.text;
         string[] ss = s.Split(' ');
-        float curC = 0;
-        int maxCountInLine = xSize / fontWidth;
-        for (int i = 0; i < ss.Length; i++)
-        {
-            if (curC + ss[i].Length <= maxCountInLine)
-            {
-                curC += (ss[i].Length + 0.35f);
-            }
-            else
-            {
-                countOfLines++;
-                curC = ss[i].Length + 0.35f;
-            }
-        }
-        transform.localScale = new Vector2(1, (float)(180 + countOfLines * 15) / 150);
-        TopBorder.transform.position = new Vector2(transform.position.x, transform.position.y + transform.localScale.y * 0.75f);
-        BottomBorder.transform.position = new Vector2(transform.position.x, transform.position.y - transform.localScale.y * 0.75f);
+		while(true)
+		{
+			float curC = 0;
+			countOfLines = 1;
+			int maxCountInLine = (int)Mathf.Round((xSize * ls) / (float)fontWidth);
+			for (int i = 0; i < ss.Length; i++)
+			{
+				if (curC + ss[i].Length <= maxCountInLine)
+				{
+					curC += (ss[i].Length + 0.35f);
+				}
+				else
+				{
+					countOfLines++;
+					curC = ss[i].Length + 0.35f;
+				}
+			}
+			if(ls * 4 >= countOfLines)
+				break;
+			else
+				ls += 0.1f;
+		}/*
+		4 * 22
+		lines = floor(ls * 4);
+		width = 300 * ls;
+		*/
+        transform.localScale = new Vector2(ls, ls);
+        curText.rectTransform.sizeDelta = new Vector2(190 * ls, 190 * ls);
+
+        //TopBorder.transform.position = new Vector2(transform.position.x, transform.position.y + transform.localScale.y * 0.75f);
+        //BottomBorder.transform.position = new Vector2(transform.position.x, transform.position.y - transform.localScale.y * 0.75f);
     }
 
 	void Start ()
@@ -77,6 +85,10 @@ public class DialogueCloud : MonoBehaviour {
 	
 	void Update () 
     {
+
+        textField.rectTransform.position =
+            (Vector2)Camera.main.WorldToScreenPoint
+            (new Vector3(transform.position.x, transform.position.y, 0));
 	    if(Input.GetMouseButtonDown(0))
         {
             if (replicas.Length > curReplica + 1)
@@ -93,3 +105,4 @@ public class DialogueCloud : MonoBehaviour {
         }
 	}
 }
+
