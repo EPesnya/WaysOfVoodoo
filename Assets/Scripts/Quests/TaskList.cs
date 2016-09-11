@@ -154,9 +154,4 @@ public class TaskList : MonoBehaviour {
         }
     }
 
-    void Update()
-    {
-        transform.position = (Vector2)cam.transform.position - new Vector2(-6, 3.5f);
-    }
-
 }

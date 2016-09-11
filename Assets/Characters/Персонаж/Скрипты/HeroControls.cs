@@ -2,132 +2,77 @@
 using System.Collections;
 
 public class HeroControls : MonoBehaviour {
-
-    GameObject Ground;
-    public Animator anim;
-    float speed = 0;
-    bool isWalking = false;
-    bool isLookToRight = true;
-    public float maxSpeed = 3;
-    float starPrepJump;
-    float jumpDelay = 0.3f;
-    bool shouldJump;
-
-    bool isFlying = false;
-    float flyingStart;
-    float timeOfFlight = 1;
-
-
+    
     public static bool grounded;
     public Transform groundDetector;
-    float groundRadius = 0.2f;
+    public Transform groundDetector1;
+    public Animator anim;
+    public float speed = 8;
     public LayerMask whatIsGround;
+    public GameObject FireBall;
 
-    /*
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        grounded = true;
+    GameObject Ground;
+    bool isWalking = false;
+    bool isLookToRight = true;
+    float jumpForce = 500;
+    float groundRadius = 0.2f;
 
-    }
-
-    void OnCollisionExit2D(Collision2D coll)
-    {
-        grounded = false;
-    }
-
-
-    void Strat()
-    {
-        //anim = this.GetComponent<Animator>();
-        Ground = GameObject.FindGameObjectWithTag("Respawn");
-    }
-    */
     void Flip()
     {
-        this.transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
+        this.transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, 1);
     }
 
 	void FixedUpdate () 
     {
-        grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
-            speed *= 0.9f;
-            Vector2 curVelocity = this.GetComponent<Rigidbody2D>().velocity;
-            if (Input.GetKey("d"))
-            {
-                speed += 0.3f;
-                if (speed > maxSpeed)
-                {
-                    speed = maxSpeed;
-                }
-            }
-            else if (Input.GetKey("a"))
-            {
-                speed -= 0.3f;
-                if (speed < -maxSpeed)
-                {
-                    speed = -maxSpeed;
-                }
-            }
+        grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround)
+                    || Physics2D.OverlapCircle(groundDetector1.position, groundRadius, whatIsGround);
 
-            if (speed < 0 && isLookToRight)
-            {
-                Flip();
-                isLookToRight = false;
-            }
-            if (speed > 0 && !isLookToRight)
+        Vector2 curVelocity = GetComponent<Rigidbody2D>().velocity;
+
+        if (Input.GetKey("d"))
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
+            isWalking = true;
+            if (!isLookToRight)
             {
                 Flip();
                 isLookToRight = true;
             }
+            anim.SetBool("Walk", true);
+        }
+        else if(Input.GetKey("a"))
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, curVelocity.y);
+            isWalking = true;
+            if(isLookToRight)
+            {
+                Flip();
+                isLookToRight = false;
+            }
+            anim.SetBool("Walk", true);
+        }
+        else
+        {
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0, curVelocity.y);
+            isWalking = false;
+            anim.SetBool("Walk", false);
+        }
+        if (Input.GetKeyDown("space") && grounded)
+        {
+            this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
+        }
 
-            if (Input.GetKeyDown("space") && grounded)
-            {
-                anim.SetTrigger("Jump");
-                shouldJump = true;
-            }
+        ////////////////
+        if (Input.GetKeyDown("f"))
+        {
+            GameObject tmp;
+            tmp = Instantiate(FireBall, this.transform) as GameObject;
+            tmp.transform.position = new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
+            tmp.transform.parent = null;
+            tmp.transform.localScale = new Vector3(3, 3, 1);
+            tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(15 * transform.localScale.x, 0);
 
-            if (Input.GetKeyDown("q"))// && Ground.GetComponent<Collider2D>().bounds.Contains(transform.GetChild(0).position))
-            {
-                GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 250), ForceMode2D.Force);
-                GetComponent<Rigidbody2D>().gravityScale = 1f;
-                anim.SetTrigger("AirJump");
-                flyingStart = Time.time;
-                isFlying = true;
-            }
-            if (isFlying)
-            {
-                if (Time.time - flyingStart < timeOfFlight)
-                {
-                    if (isLookToRight)
-                        GetComponent<Rigidbody2D>().AddForce(new Vector2(300, 0), ForceMode2D.Force);
-                    else
-                        GetComponent<Rigidbody2D>().AddForce(new Vector2(-300, 0), ForceMode2D.Force);
-                }
-                else
-                {
-                    GetComponent<Rigidbody2D>().gravityScale = 3f;
-                    isFlying = false;
-                }
-            }
-
-            if (Time.time - starPrepJump > jumpDelay && shouldJump)
-            {
-                this.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 500), ForceMode2D.Force);
-                shouldJump = false;
-            }
-
-            this.GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
-            anim.SetFloat("MovementSpeed", Mathf.Abs(speed));
-
-            if (Mathf.Abs(speed) < 0.1f && isWalking)
-            {
-                //anim.Play("Rest", -1, 0);
-                isWalking = false;
-            }
-            if (Mathf.Abs(speed) > 0.1f && !isWalking)
-            {
-                //anim.Play("Walk", -1, 0);
-                isWalking = true;
-            }
+        }
 	}
 }
