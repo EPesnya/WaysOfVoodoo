@@ -71,7 +71,7 @@ public class HeroControls : MonoBehaviour {
             tmp.transform.position = new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
             tmp.transform.parent = null;
             tmp.transform.localScale = new Vector3(3, 3, 1);
-            tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(15 * transform.localScale.x, 0);
+            tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(25 * transform.localScale.x, 0);
 
         }
 	}
