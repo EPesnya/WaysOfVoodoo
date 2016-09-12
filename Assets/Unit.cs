@@ -3,11 +3,16 @@ using System.Collections;
 
 public class Unit : MonoBehaviour {
 
-    int hp { get; set; }
+    protected int hp = 45;
     string name { get; set; }
-    int curHP = 45;
+    protected int curHP;
 
-    public void setDeltaHP(int a)
+    void Start()
+    {
+        curHP = hp;
+    }
+
+    public virtual void setDeltaHP(int a)
     {
         curHP += a;
         if(curHP <= 0)
