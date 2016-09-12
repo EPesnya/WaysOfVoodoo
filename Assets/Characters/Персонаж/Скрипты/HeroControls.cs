@@ -5,11 +5,9 @@ public class HeroControls : MonoBehaviour {
     
     public static bool grounded;
     public Transform groundDetector;
-    public Transform groundDetector1;
     public Animator anim;
     public float speed = 8;
     public LayerMask whatIsGround;
-    public GameObject FireBall;
 
     GameObject Ground;
     bool isWalking = false;
@@ -24,8 +22,7 @@ public class HeroControls : MonoBehaviour {
 
 	void FixedUpdate () 
     {
-        grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround)
-                    || Physics2D.OverlapCircle(groundDetector1.position, groundRadius, whatIsGround);
+        grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
 
         Vector2 curVelocity = GetComponent<Rigidbody2D>().velocity;
 
@@ -61,18 +58,6 @@ public class HeroControls : MonoBehaviour {
         {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
-        }
-
-        ////////////////
-        if (Input.GetKeyDown("f"))
-        {
-            GameObject tmp;
-            tmp = Instantiate(FireBall, this.transform) as GameObject;
-            tmp.transform.position = new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
-            tmp.transform.parent = null;
-            tmp.transform.localScale = new Vector3(3, 3, 1);
-            tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(25 * transform.localScale.x, 0);
-
         }
 	}
 }

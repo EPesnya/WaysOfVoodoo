@@ -4,8 +4,8 @@ using System.Collections;
 public class EnemyUnit : Unit {
 
     public GameObject HPBar;
-    public float verticalShift = 2;
     Transform child;
+    public float verticalShift = 2;
     
     void Start()
     {
@@ -14,6 +14,7 @@ public class EnemyUnit : Unit {
         HPBar.transform.parent = transform;
         HPBar.transform.position = new Vector2(transform.position.x, transform.position.y + verticalShift);
         child = HPBar.transform.GetChild(0);
+        child.gameObject.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
     }
 
     public override void setDeltaHP(int a)
