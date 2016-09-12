@@ -9,6 +9,7 @@ public class EnemyUnit : Unit {
     
     void Start()
     {
+        this.gameObject.tag = "Enemy";
         curHP = hp;
         HPBar = Instantiate(HPBar, transform) as GameObject;
         HPBar.transform.parent = transform;

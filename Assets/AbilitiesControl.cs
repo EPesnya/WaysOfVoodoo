@@ -4,6 +4,7 @@ using System.Collections;
 public class AbilitiesControl : MonoBehaviour {
 
     public GameObject FireBall;
+    public GameObject FireTotem;
 
     float lastCastTime;
     float globalCooldown = 1;
@@ -27,6 +28,8 @@ public class AbilitiesControl : MonoBehaviour {
     Transform windResourceBarFill;
     Transform earthResourceBar;
     Transform earthResourceBarFill;
+    Transform GCDResourceBar;
+    Transform GCDResourceBarFill;
 
     float guiScale = 1;
     float normalDepth;
@@ -47,6 +50,9 @@ public class AbilitiesControl : MonoBehaviour {
         earthResourceBar = Camera.main.transform.GetChild(3);
         earthResourceBarFill = earthResourceBar.transform.GetChild(0);
         earthResourceBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(45, 128, 30, 255);//??
+        GCDResourceBar = Camera.main.transform.GetChild(4);
+        GCDResourceBarFill = GCDResourceBar.transform.GetChild(0);
+        GCDResourceBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 255);//??
         normalDepth = Camera.main.orthographicSize;
 	}
 	
@@ -69,6 +75,8 @@ public class AbilitiesControl : MonoBehaviour {
         windResourceBar.localScale = ScaleVector;
         earthResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 1.5f * guiScale, 0);
         earthResourceBar.localScale = ScaleVector;
+        GCDResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 2.1f * guiScale, 0);
+        GCDResourceBar.localScale = ScaleVector;
         if (Time.time - lastCastTime > globalCooldown)
         {
             if (Input.GetKeyDown("r") && curFireResource > 25) //25 заменить на манакост
@@ -81,6 +89,15 @@ public class AbilitiesControl : MonoBehaviour {
                 tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(25 * transform.localScale.x, 0);
                 lastCastTime = Time.time;
                 curFireResource -= 25; //
+            }
+            if (Input.GetKeyDown("t") && curFireResource > 50) //50 заменить на манакост
+            {
+                GameObject tmp;
+                tmp = Instantiate(FireTotem, this.transform) as GameObject;
+                tmp.transform.position = new Vector2(transform.position.x, transform.position.y);
+                tmp.transform.parent = null;
+                lastCastTime = Time.time;
+                curFireResource -= 50; //
             }
         }
         float delta = Time.time - lastFrameTime;
@@ -101,6 +118,7 @@ public class AbilitiesControl : MonoBehaviour {
         setBarFill(waterResourceBarFill, curWaterResource / (float)waterResource);
         setBarFill(windResourceBarFill, curWindResource / (float)windResource);
         setBarFill(earthResourceBarFill, curEarthResource / (float)earthResource);
+        setBarFill(GCDResourceBarFill, (Time.time - lastCastTime > 1) ? 1 : Time.time - lastCastTime);
         lastFrameTime = Time.time;
 	}
 }
