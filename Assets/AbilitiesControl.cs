@@ -28,6 +28,10 @@ public class AbilitiesControl : MonoBehaviour {
     Transform earthResourceBar;
     Transform earthResourceBarFill;
 
+    float guiScale = 1;
+    float normalDepth;
+    float normalLocalScale = 5;
+
 	void Start () 
     {
         lastCastTime = -10;
@@ -43,6 +47,7 @@ public class AbilitiesControl : MonoBehaviour {
         earthResourceBar = Camera.main.transform.GetChild(3);
         earthResourceBarFill = earthResourceBar.transform.GetChild(0);
         earthResourceBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(45, 128, 30, 255);//??
+        normalDepth = Camera.main.orthographicSize;
 	}
 	
     void setBarFill(Transform barFill, float part)
@@ -53,6 +58,17 @@ public class AbilitiesControl : MonoBehaviour {
 
 	void Update () 
     {
+        guiScale = Camera.main.orthographicSize / normalDepth;
+        Vector2 ScaleVector = new Vector2(normalLocalScale * guiScale, normalLocalScale * guiScale);
+        fireResourceBar.position = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width * 0.5f, Screen.height * 0.05f));
+        fireResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y, 0);
+        fireResourceBar.localScale = ScaleVector;
+        waterResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 0.5f * guiScale, 0);
+        waterResourceBar.localScale = ScaleVector;
+        windResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 1f * guiScale, 0);
+        windResourceBar.localScale = ScaleVector;
+        earthResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 1.5f * guiScale, 0);
+        earthResourceBar.localScale = ScaleVector;
         if (Time.time - lastCastTime > globalCooldown)
         {
             if (Input.GetKeyDown("r") && curFireResource > 25) //25 заменить на манакост
