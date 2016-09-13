@@ -6,7 +6,8 @@ public class HeroControls : MonoBehaviour {
     public static bool grounded;
     public Transform groundDetector;
     public Animator anim;
-    public float speed = 8;
+    float speed = 8;
+    public float speedModifier = 1;
     public LayerMask whatIsGround;
 
     GameObject Ground;
@@ -23,12 +24,12 @@ public class HeroControls : MonoBehaviour {
 	void FixedUpdate () 
     {
         grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
-
+        float curSpeed = speed * speedModifier;
         Vector2 curVelocity = GetComponent<Rigidbody2D>().velocity;
 
         if (Input.GetKey("d"))
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(speed, curVelocity.y);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(curSpeed, curVelocity.y);
             isWalking = true;
             if (!isLookToRight)
             {
@@ -39,7 +40,7 @@ public class HeroControls : MonoBehaviour {
         }
         else if(Input.GetKey("a"))
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(-speed, curVelocity.y);
+            GetComponent<Rigidbody2D>().velocity = new Vector2(-curSpeed, curVelocity.y);
             isWalking = true;
             if(isLookToRight)
             {

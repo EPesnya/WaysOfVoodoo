@@ -35,6 +35,9 @@ public class AbilitiesControl : MonoBehaviour {
     float normalDepth;
     float normalLocalScale = 5;
 
+    float lastUseOfWindwalk = -10;
+    bool isWindwalkActive = false;
+
 	void Start () 
     {
         lastCastTime = -10;
@@ -99,7 +102,32 @@ public class AbilitiesControl : MonoBehaviour {
                 lastCastTime = Time.time;
                 curFireResource -= 50; //
             }
+            if (Input.GetKeyDown("q") && curWindResource > 50)
+            {
+                GetComponent<HeroControls>().speedModifier += 0.5f;
+                lastCastTime = Time.time;
+                curWindResource -= 50;
+                lastUseOfWindwalk = Time.time;
+                isWindwalkActive = true;
+            }
+            if (Input.GetKeyDown("e") && curWindResource > 50)
+            {
+                lastCastTime = Time.time;
+                foreach(GameObject g in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    float t = (1 / Vector2.SqrMagnitude(g.transform.position - transform.position)) * 5000;
+                    Vector2 normalVector = (g.transform.position - transform.position).normalized;
+                    g.GetComponent<Rigidbody2D>().AddForce(normalVector * t);
+                }
+                curWindResource -= 50;
+            }
         }
+        if (isWindwalkActive && Time.time - lastUseOfWindwalk > 5)
+        {
+            GetComponent<HeroControls>().speedModifier -= 0.5f;
+            isWindwalkActive = false;
+        }
+
         float delta = Time.time - lastFrameTime;
         delta *= 5;
         curFireResource += delta;
