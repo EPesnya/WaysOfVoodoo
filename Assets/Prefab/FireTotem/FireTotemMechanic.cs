@@ -24,6 +24,7 @@ public class FireTotemMechanic : MonoBehaviour {
 	    if(Time.time - lastShootTime > delay && lifeTime < 5)
         {
             GameObject tmp = Instantiate(fireball, transform) as GameObject;
+            tmp.transform.parent = null;
             tmp.transform.position = transform.position;
             Transform minDist = transform;
             float curMin = 999999;
@@ -36,7 +37,7 @@ public class FireTotemMechanic : MonoBehaviour {
                     minDist = c.transform;
                 }
             }
-            tmp.GetComponent<Rigidbody2D>().velocity = minDist.position - transform.position;
+            tmp.GetComponent<Rigidbody2D>().velocity = (minDist.position - transform.position).normalized * 5;
             lastShootTime = Time.time;
         }
         else

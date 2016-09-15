@@ -6,19 +6,33 @@ public abstract class EnemyUnit : Unit {
     public GameObject HPBar;
     public float verticalShift = 2;
     protected bool isPooled = false;
+    protected float poolRange = 10;
     protected float movementSpeed = 1;
     protected float speedModifier = 1;
     protected Transform HPBarFill;
+    protected GameObject Player;
     
-    void Start()
+    public virtual void OnPlayersMove()
     {
-        this.gameObject.tag = "Enemy";
+        if(!isPooled)
+            isPooled = Mathf.Abs((int)(Player.transform.position - transform.position).x) < poolRange &&
+                       Mathf.Abs((int)(Player.transform.position - transform.position).y) < poolRange;
+    }
+
+    protected void Init()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
         curHP = hp;
         HPBar = Instantiate(HPBar, transform) as GameObject;
         HPBar.transform.parent = transform;
         HPBar.transform.position = new Vector2(transform.position.x, transform.position.y + verticalShift);
         HPBarFill = HPBar.transform.GetChild(0);
         HPBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(0, 255, 0, 255);
+    }
+
+    void Start()
+    {
+        Init();
     }
 
     public override void setDeltaHP(int a)

@@ -25,6 +25,9 @@ public class HeroControls : MonoBehaviour {
     float normalDepth;
     float normalLocalScale = 5;
 
+    GameObject[] Enemies;
+    Vector2 prevPos;
+
     void Flip()
     {
         this.transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, 1);
@@ -36,7 +39,7 @@ public class HeroControls : MonoBehaviour {
         barFill.localPosition = new Vector2(-0.5f + 0.5f * part, 0);
     }
 
-    public void setDeltaHP(int a)
+    public void setDeltaHP(float a)
     {
         currentHP += a;
         setBarFill(HPBarFill, currentHP / HP);
@@ -44,10 +47,12 @@ public class HeroControls : MonoBehaviour {
 
     void Start()
     {
+        Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         HPBar = Camera.main.transform.GetChild(5);
         HPBarFill = HPBar.transform.GetChild(0);
         HPBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(240, 120, 16, 255);//??
         normalDepth = Camera.main.orthographicSize;
+        prevPos = transform.position;   
     }
 
 	void FixedUpdate () 
@@ -96,5 +101,9 @@ public class HeroControls : MonoBehaviour {
             this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
         }
+        if((Vector2)transform.position != prevPos)
+            foreach (GameObject g in Enemies)
+                if(g != null)
+                    g.GetComponent<EnemyUnit>().OnPlayersMove();
 	}
 }
