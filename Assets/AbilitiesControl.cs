@@ -22,14 +22,19 @@ public class AbilitiesControl : MonoBehaviour {
 
     Transform fireResourceBar;
     Transform fireResourceBarFill;
+
     Transform waterResourceBar;
     Transform waterResourceBarFill;
+
     Transform windResourceBar;
     Transform windResourceBarFill;
+
     Transform earthResourceBar;
     Transform earthResourceBarFill;
+
     Transform GCDResourceBar;
     Transform GCDResourceBarFill;
+
 
     float guiScale = 1;
     float normalDepth;
@@ -82,6 +87,7 @@ public class AbilitiesControl : MonoBehaviour {
         GCDResourceBar.localScale = ScaleVector;
         if (Time.time - lastCastTime > globalCooldown)
         {
+
             if (Input.GetKeyDown("r") && curFireResource > 25) //25 заменить на манакост
             {
                 GameObject tmp;
