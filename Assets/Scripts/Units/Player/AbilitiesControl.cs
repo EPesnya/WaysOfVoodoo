@@ -15,6 +15,7 @@ public class AbilitiesControl : MonoBehaviour {
     float waterResource = 100;
     float windResource = 100;
     float earthResource = 100;
+
     float curFireResource = 100;
     float curWaterResource = 100;
     float curWindResource = 100;

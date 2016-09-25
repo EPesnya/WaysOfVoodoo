@@ -47,6 +47,7 @@ public class HeroControls : MonoBehaviour {
     }
     float curSpeed;
     Vector2 curVelocity;
+    bool onStairs = false, onStairsMove = false;
     void Start()
     {
         Enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -89,7 +90,6 @@ public class HeroControls : MonoBehaviour {
             {
                 this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
-                Debug.LogError("ass");
             }
         }))
         .Bind("!|a|d", new InputController.Action(() =>
@@ -104,65 +104,63 @@ public class HeroControls : MonoBehaviour {
             GetComponent<Rigidbody2D>().velocity = new Vector2(0, curVelocity.y);
             isWalking = false;
             anim.SetBool("Walk", false);
-        }));
-        //.Bind("!|space", new InputController.Action(() =>
-        //{
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0, curVelocity.y);
-        //    //isWalking = false;
-        //    //anim.SetBool("Walk", false);
-        //}));
+        })).
+        Bind("w", new InputController.Action(() =>
+        {
+            gameObject.transform.position += new Vector3(0, 0.05f, 0);
+            onStairsMove = true;
+            anim.SetBool("OnStairs", true);
+            anim.speed = 1;
+        }, () => { return onStairs; }))
+        .Bind("s", new InputController.Action(() =>
+        {
+            gameObject.transform.position -= new Vector3(0, 0.05f, 0);
+            onStairsMove = true;
+            anim.SetBool("OnStairs", true);
+            anim.speed = 1;
+        }, ()=> { return onStairs; }))
+        .Bind("!|s|w", new InputController.Action(()=> {
+            anim.speed = 0;
+            Debug.Log(1);
+        }, ()=> { return onStairs && !onStairsMove; }));
     }
 
     void FixedUpdate()
     {
-
         guiScale = Camera.main.orthographicSize / normalDepth;
         Vector2 ScaleVector = new Vector2(normalLocalScale * guiScale, normalLocalScale * guiScale);
         HPBar.position = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width * 0.5f, Screen.height * 0.95f));
         HPBar.position = new Vector3(HPBar.transform.position.x, HPBar.transform.position.y, 0);
         HPBar.localScale = ScaleVector;
+    }
 
-        //grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
-        //curSpeed = speed * speedModifier;
-        //curVelocity = GetComponent<Rigidbody2D>().velocity;
-
-        //if (Input.GetKey("g"))
-        //{
-        //    //GetComponent<Rigidbody2D>().velocity = new Vector2(curSpeed, curVelocity.y);
-        //    //isWalking = true;
-        //    //if (!isLookToRight)
-        //    //{
-        //    //    Flip();
-        //    //    isLookToRight = true;
-        //    //}
-        //    //anim.SetBool("Walk", true);
-        //}
-        //else if(Input.GetKey("a"))
-        //{
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(-curSpeed, curVelocity.y);
-        //    isWalking = true;
-        //    if(isLookToRight)
-        //    {
-        //        Flip();
-        //        isLookToRight = false;
-        //    }
-        //    anim.SetBool("Walk", true);
-        //}
-        //else
-        //{
-        //    GetComponent<Rigidbody2D>().velocity = new Vector2(0, curVelocity.y);
-        //    isWalking = false;
-        //    anim.SetBool("Walk", false);
-        //}
-        //if (Input.GetKeyDown("space") && grounded)
-        //{
-        //    this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
-        //    GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
-        //}
-        //if((Vector2)transform.position != prevPos)
-        //    foreach (GameObject g in Enemies)
-        //        if(g != null)
-        //            g.GetComponent<EnemyUnit>().OnPlayersMove();
-        //Debug.Log(GetComponent<Rigidbody2D>().velocity);
+    void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Stairs")
+        {
+            anim.SetBool("OnStairs", true);
+            onStairs = true;
+            if (onStairsMove)
+            {
+                gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+                collider.gameObject.transform.GetChild(0).GetComponent<EdgeCollider2D>().isTrigger = true;
+            }
+            else
+            {
+                anim.speed = 0;
+            }
+        }
+    }
+    void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Stairs")
+        {
+            onStairs = false;
+            onStairsMove = false;
+            gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+            collider.gameObject.transform.GetChild(0).GetComponent<EdgeCollider2D>().isTrigger = false;
+            anim.SetBool("OnStairs", false);
+            anim.SetBool("Walk", true);
+        }
     }
 }
