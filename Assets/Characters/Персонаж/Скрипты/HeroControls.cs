@@ -42,9 +42,12 @@ public class HeroControls : MonoBehaviour {
 
     public void setDeltaHP(float a)
     {
+        if (a < 0)
+            Camera.main.GetComponent<CameraFollow>().getHit(a);
         currentHP += a;
         setBarFill(HPBarFill, currentHP / HP);
     }
+
     float curSpeed;
     Vector2 curVelocity;
     bool onStairs = false, onStairsMove = false;
