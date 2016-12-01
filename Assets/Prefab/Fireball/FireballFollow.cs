@@ -61,7 +61,6 @@ public class FireballFollow : MonoBehaviour {
     private void LookForEnemy()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        Debug.Log(enemies.Length.ToString());
         foreach (GameObject enemy in enemies)
         {
             if (Vector2.SqrMagnitude(enemy.transform.position - Player.transform.position) < range * range)

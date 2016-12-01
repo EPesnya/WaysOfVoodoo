@@ -118,11 +118,11 @@ public class HeroControls : MonoBehaviour {
             onStairsMove = true;
             anim.SetBool("OnStairs", true);
             anim.speed = 1;
-        }, ()=> { return onStairs; }))
-        .Bind("!|s|w", new InputController.Action(()=> {
-            anim.speed = 0;
-            Debug.Log(1);
-        }, ()=> { return onStairs && !onStairsMove; }));
+        }, () => { return onStairs; }))
+        .Bind("!|s|w", new InputController.Action(() =>
+         {
+             anim.speed = 0;
+         }, () => { return onStairs && !onStairsMove; }));
     }
 
     void FixedUpdate()
