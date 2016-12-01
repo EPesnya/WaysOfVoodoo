@@ -19,7 +19,6 @@ public class CameraFollow : MonoBehaviour {
 
     public void getHit(float damage)
     {
-        Debug.Log(damage);
         if(Time.time - lastDamageTakingTime < 1)
         {
             Mask.GetComponent<SpriteRenderer>().color = new Color(Mask.GetComponent<SpriteRenderer>().color.r,

@@ -23,7 +23,7 @@ public class SimpleRangedEnemy : EnemyUnit {
                 tmp = Instantiate(bomb, transform) as GameObject;
                 tmp.transform.parent = null;
                 tmp.transform.position = transform.position;
-                tmp.GetComponent<Rigidbody2D>().velocity = (Player.transform.position - transform.position).normalized * 5;//5???
+                tmp.GetComponent<Rigidbody2D>().velocity = (Player.transform.position - transform.position).normalized * 8;//5???
                 lastAtackTime = Time.time;
             }
 	}

@@ -135,6 +135,10 @@ public class HeroControls : MonoBehaviour {
         HPBar.position = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width * 0.5f, Screen.height * 0.95f));
         HPBar.position = new Vector3(HPBar.transform.position.x, HPBar.transform.position.y, 0);
         HPBar.localScale = ScaleVector;
+        if((Vector2)transform.position != prevPos) 
+            foreach (GameObject g in Enemies) 
+                if(g != null) 
+                    g.GetComponent<EnemyUnit>().OnPlayersMove(); 
     }
 
     void OnTriggerStay2D(Collider2D collider)

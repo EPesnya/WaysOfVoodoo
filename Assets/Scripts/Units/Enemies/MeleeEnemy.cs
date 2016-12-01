@@ -20,6 +20,7 @@ public class MeleeEnemy : EnemyUnit {
     {
 	    if(isPooled)
         {
+            //Debug.Log("asd");
             Vector2 tmp = Player.transform.position - transform.position;
             if (Mathf.Abs((int)tmp.x) < atackRange &&
                 Mathf.Abs((int)tmp.y) < atackRange || isAtacking)

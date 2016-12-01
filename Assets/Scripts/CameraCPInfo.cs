@@ -13,7 +13,7 @@ public class CameraCPInfo : MonoBehaviour {
 
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Player = PlayerToolkit.Player;
     }
 
 	void Update () 

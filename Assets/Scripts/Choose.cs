@@ -13,7 +13,7 @@ public class Choose : MonoBehaviour {
     Animator Terminator;
 
 	void Start () {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        Player = PlayerToolkit.Player;
         Terminator = Eye.GetComponent<Animator>();
 	}
 	
