@@ -35,6 +35,8 @@ public class AbilitiesControl : MonoBehaviour {
 
     Transform GCDResourceBar;
     Transform GCDResourceBarFill;
+    
+    Transform DamageMask;
 
 
     float guiScale = 1;
@@ -62,6 +64,7 @@ public class AbilitiesControl : MonoBehaviour {
         GCDResourceBar = Camera.main.transform.GetChild(4);
         GCDResourceBarFill = GCDResourceBar.transform.GetChild(0);
         GCDResourceBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 255);//??
+        DamageMask = Camera.main.transform.GetChild(7);
         normalDepth = Camera.main.orthographicSize;
 	}
 	
@@ -86,6 +89,7 @@ public class AbilitiesControl : MonoBehaviour {
         earthResourceBar.localScale = ScaleVector;
         GCDResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 2.1f * guiScale, 0);
         GCDResourceBar.localScale = ScaleVector;
+        DamageMask.localScale = ScaleVector / 5.0f;
         if (Time.time - lastCastTime > globalCooldown)
         {
 
