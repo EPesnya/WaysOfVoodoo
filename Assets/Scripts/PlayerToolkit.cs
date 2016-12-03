@@ -5,9 +5,10 @@ public class PlayerToolkit : MonoBehaviour {
 
     public static GameObject Player;
 
-    void Start()
+    public static GameObject GetPlayer()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        if(Player == null)
+            Player = GameObject.FindGameObjectWithTag("Player");
+        return Player;
     }
-
 }

@@ -13,7 +13,7 @@ public class Choose : MonoBehaviour {
     Animator Terminator;
 
 	void Start () {
-        Player = PlayerToolkit.Player;
+        Player = PlayerToolkit.GetPlayer();
         Terminator = Eye.GetComponent<Animator>();
 	}
 	

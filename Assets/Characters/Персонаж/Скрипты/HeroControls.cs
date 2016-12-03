@@ -64,7 +64,7 @@ public class HeroControls : MonoBehaviour {
         HPBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(240, 120, 16, 255);//??
         normalDepth = Camera.main.orthographicSize;
         prevPos = transform.position;
-        InputController = GameObject.FindGameObjectWithTag("InputController").GetComponent<InputController>();
+        InputController = GameObject.Find("InputController").GetComponent<InputController>();
         InputController.Bind("d", new InputController.Action(() =>
         {
             curSpeed = speed * speedModifier;
@@ -96,7 +96,7 @@ public class HeroControls : MonoBehaviour {
             grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround) ||
                 Physics2D.OverlapCircle(groundDetector1.position, groundRadius, whatIsGround) ||
                 Physics2D.OverlapCircle(groundDetector2.position, groundRadius, whatIsGround);
-            if (grounded && !isJumping)
+            if (grounded)
             {
                 this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
@@ -104,9 +104,14 @@ public class HeroControls : MonoBehaviour {
         }))
         .Bind("!|a|d", new InputController.Action(() =>
         {
-            grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
-            if (grounded)
+            grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround) ||
+                Physics2D.OverlapCircle(groundDetector1.position, groundRadius, whatIsGround) ||
+                Physics2D.OverlapCircle(groundDetector2.position, groundRadius, whatIsGround);
+            if(grounded)
+            {
                 GetComponent<Rigidbody2D>().velocity = new Vector2(0, curVelocity.y);
+                //Time.timeScale = 0.2f;
+            }
             isWalking = false;
             anim.SetBool("Walk", false);
         })).Bind("a|d", new InputController.Action(() =>

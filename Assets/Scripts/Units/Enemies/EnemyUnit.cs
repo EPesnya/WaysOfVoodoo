@@ -21,7 +21,7 @@ public abstract class EnemyUnit : Unit {
 
     protected void Init()
     {
-        Player = PlayerToolkit.Player;
+        Player = PlayerToolkit.GetPlayer();
         curHP = hp;
         HPBar = Instantiate(HPBar, transform) as GameObject;
         HPBar.transform.parent = transform;
