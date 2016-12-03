@@ -7,9 +7,10 @@ public class FireballMechanics : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D a)
     {
-        if (a.gameObject.tag != "Player")
+        string tag = a.gameObject.tag;
+        if (tag == "Enemy" || tag == "Ground")
         {
-            if (a.gameObject.GetComponent<EnemyUnit>() != null)
+            if (tag == "Enemy")
             {
                 a.gameObject.GetComponent<EnemyUnit>().setDeltaHP(-10);
             }

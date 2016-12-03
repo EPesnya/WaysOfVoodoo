@@ -45,6 +45,8 @@ public class AbilitiesControl : MonoBehaviour {
 
     float lastUseOfWindwalk = -10;
     bool isWindwalkActive = false;
+    bool isCasting = false;
+    string castingSpell;
 
 	void Start () 
     {
@@ -64,7 +66,7 @@ public class AbilitiesControl : MonoBehaviour {
         GCDResourceBar = Camera.main.transform.GetChild(4);
         GCDResourceBarFill = GCDResourceBar.transform.GetChild(0);
         GCDResourceBarFill.gameObject.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 255);//??
-        DamageMask = Camera.main.transform.GetChild(7);
+        DamageMask = Camera.main.transform.GetChild(6);
         normalDepth = Camera.main.orthographicSize;
 	}
 	
@@ -90,21 +92,50 @@ public class AbilitiesControl : MonoBehaviour {
         GCDResourceBar.position = new Vector3(fireResourceBar.transform.position.x, fireResourceBar.transform.position.y + 2.1f * guiScale, 0);
         GCDResourceBar.localScale = ScaleVector;
         DamageMask.localScale = ScaleVector / 5.0f;
+        /*if(isCasting)
+            if(Input.GetMouseButtonDown(0) || Input.anyKeyDown)
+                switch (castingSpell)
+                {
+                    case "FireBall":
+                    {
+                        if(Input.GetKeyDown("r"))
+                        {
+                            GameObject tmp;
+                            tmp = Instantiate(FireBall, this.transform) as GameObject;
+                            tmp.transform.position = new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
+                            tmp.transform.parent = null;
+                            tmp.transform.localScale = new Vector3(3, 3, 1); //???
+                            Vector2 a = (Vector2)(transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                            a.Normalize();
+                            tmp.GetComponent<Rigidbody2D>().velocity = a * -25;
+                            lastCastTime = Time.time;
+                            curFireResource -= 25; //
+                            isCasting = false;
+                            castingSpell = "";
+                        }
+                        break;
+                    }
+                    default: break;
+                }*/
         if (Time.time - lastCastTime > globalCooldown)
         {
 
-            if (Input.GetKeyDown("r") && curFireResource > 25) //25 заменить на манакост
+            if (Input.GetKeyDown("r") && curFireResource > 25) // 25 заменить на манакост
             {
                 GameObject tmp;
                 tmp = Instantiate(FireBall, this.transform) as GameObject;
-                tmp.transform.position = new Vector2(transform.position.x + transform.localScale.x, transform.position.y);
+                tmp.transform.position = new Vector2(transform.position.x, transform.position.y);
                 tmp.transform.parent = null;
                 tmp.transform.localScale = new Vector3(3, 3, 1); //???
-                tmp.GetComponent<Rigidbody2D>().velocity = new Vector2(25 * transform.localScale.x, 0);
+                Vector2 a = (Vector2)(transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                a.Normalize();
+                tmp.GetComponent<Rigidbody2D>().velocity = a * -25;
                 lastCastTime = Time.time;
                 curFireResource -= 25; //
+                // isCasting = true;
+                // castingSpell = "FireBall";
             }
-            if (Input.GetKeyDown("t") && curFireResource > 50) //50 заменить на манакост
+            if (Input.GetKeyDown("t") && curFireResource > 50) // 50 заменить на манакост
             {
                 GameObject tmp;
                 tmp = Instantiate(FireTotem, this.transform) as GameObject;

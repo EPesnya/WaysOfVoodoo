@@ -39,7 +39,7 @@ public class CameraFollow : MonoBehaviour {
 
 	void Start () 
     {
-        Mask = transform.GetChild(7).gameObject;
+        Mask = transform.GetChild(6).gameObject;
         Player = GameObject.FindGameObjectWithTag("Player");
 	}
 	

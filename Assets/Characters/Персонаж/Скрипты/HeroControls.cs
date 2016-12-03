@@ -4,7 +4,9 @@ using System.Collections;
 public class HeroControls : MonoBehaviour {
     
     public static bool grounded;
-    public Transform groundDetector;
+    Transform groundDetector;
+    Transform groundDetector1;
+    Transform groundDetector2;
     public Animator anim;
     float speed = 8;
     public float speedModifier = 1;
@@ -53,6 +55,9 @@ public class HeroControls : MonoBehaviour {
     bool onStairs = false, onStairsMove = false;
     void Start()
     {
+        groundDetector = transform.GetChild(3);
+        groundDetector1 = transform.GetChild(4);
+        groundDetector2 = transform.GetChild(5);
         Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         HPBar = Camera.main.transform.GetChild(5);
         HPBarFill = HPBar.transform.GetChild(0);
@@ -88,8 +93,10 @@ public class HeroControls : MonoBehaviour {
         }))
         .Bind("*|space", new InputController.Action(() =>
         {
-            grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround);
-            if (grounded)
+            grounded = Physics2D.OverlapCircle(groundDetector.position, groundRadius, whatIsGround) ||
+                Physics2D.OverlapCircle(groundDetector1.position, groundRadius, whatIsGround) ||
+                Physics2D.OverlapCircle(groundDetector2.position, groundRadius, whatIsGround);
+            if (grounded && !isJumping)
             {
                 this.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce));
